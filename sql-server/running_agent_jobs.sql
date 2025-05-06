@@ -20,3 +20,6 @@ WHERE
     AND ja.stop_execution_date IS NULL
 ORDER BY 
     ja.start_execution_date;
+
+
+EXEC msdb.dbo.sp_help_job @execution_status = 1;
