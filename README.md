@@ -4,7 +4,7 @@ General utilities
 
 This repository contains a collection of utility scripts and tools for various platforms and services.
 
-## Tools available as of 2025-05-23
+## Available Tools
 
 ### AWS Utilities
 
@@ -21,11 +21,16 @@ This repository contains a collection of utility scripts and tools for various p
 #### S3 Utilities
 - **presign-upload-url.py**: Generate pre-signed URLs for S3 uploads
 
+#### Parameter Store Utilities
+- **parameters-to-json.sh**: Retrieve AWS Parameter Store parameters as JSON with optional decryption
+
 ### Database Utilities
 
 #### PostgreSQL Utilities
 - **index_sizes.sql**: Query to check the size of indexes in a PostgreSQL database
 - **quick_schema_review.sql**: SQL script for a quick review of a PostgreSQL database schema
+- **quick_schema_review_markdown.sql**: Generate markdown documentation for PostgreSQL database schema
+- **quick_select_insert_update.sql**: Generate SELECT, INSERT, and UPDATE SQL statements for tables
 - **tables_sizes.sql**: Query to check the sizes of tables in a PostgreSQL database
 
 #### SQL Server Utilities
@@ -37,6 +42,13 @@ This repository contains a collection of utility scripts and tools for various p
 - **get-bsod-in-last-48hrs.ps1**: PowerShell script to check for blue screen of death events in the last 48 hours
 - **get-recent-windows-updates.ps1**: PowerShell script to list recently installed Windows updates
 
+## Installation
+
+Clone the repository to get access to all utilities:
+
+```bash
+git clone https://github.com/MattOfNZ/utils.git
+cd utils
 ```
-git clone https://github.com/MattOfNZ/utils
-```
+
+Individual scripts can be run directly from their respective directories. Refer to each tool's documentation or run with `--help` for usage instructions.
