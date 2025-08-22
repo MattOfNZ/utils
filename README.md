@@ -22,6 +22,7 @@ This repository contains a collection of utility scripts and tools for various p
 - **presign-upload-url.py**: Generate pre-signed URLs for S3 uploads
 
 #### Parameter Store Utilities
+- **compare-keys.sh**: Compare parameters between two Parameter Store prefixes with detailed analysis and sync script generation
 - **parameters-to-json.sh**: Retrieve AWS Parameter Store parameters as JSON with optional decryption
 
 ### Database Utilities
