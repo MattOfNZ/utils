@@ -30,6 +30,7 @@ This repository contains a collection of utility scripts and tools for various p
 - **index_sizes.sql**: Query to check the size of indexes in a PostgreSQL database
 - **quick_schema_review.sql**: SQL script for a quick review of a PostgreSQL database schema
 - **quick_schema_review_markdown.sql**: Generate markdown documentation for PostgreSQL database schema
+- **quick_schema_review_markdown_v2.sql**: Generate markdown documentation for PostgreSQL database schema including views with column details and view definitions. Uses CTE parameters for ILIKE filtering on schema and table/view names
 - **quick_select_insert_update.sql**: Generate SELECT, INSERT, and UPDATE SQL statements for tables
 - **tables_sizes.sql**: Query to check the sizes of tables in a PostgreSQL database
 
