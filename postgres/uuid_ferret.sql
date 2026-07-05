@@ -19,11 +19,14 @@
 --     The generated SQL is deliberately lean:
 --       - a `p` CTE holds the target UUID array once, referenced by every branch
 --       - a single typed header row (''::text AS schema_name, ...) establishes
---         column names/types for the whole UNION ALL, so every other branch is
+--         column names/types for the whole UNION, so every other branch is
 --         just three bare literals + a FROM/WHERE/LIMIT -- no repeated AS
---         aliases or casts per branch
---       - the header row is filtered out of the final result with
---         WHERE schema_name <> ''
+--         aliases or casts per branch, and it's filtered out of the final
+--         result with WHERE schema_name <> ''
+--       - branches are joined with plain UNION (not UNION ALL), so if the
+--         same schema/table/column matches more than one target UUID, or a
+--         table has multiple matching rows, it still appears only once in
+--         the result
 --
 --   STEP 2 (separate execution, "hunt" query):
 --     Take the generated SQL text returned by Step 1 and execute it yourself.
@@ -66,7 +69,7 @@ settings AS MATERIALIZED (
         true                             AS search_fk_columns,     -- hunt in foreign key columns
         false                            AS search_other_uuid_columns, -- hunt in non-key uuid columns too
         true                             AS search_uuid_array_columns, -- also check uuid[] columns (&& overlap)
-        500                              AS max_results_per_table  -- LIMIT per generated branch
+        1                                AS max_results_per_table  -- LIMIT per generated branch; 1 is enough since output is just schema/table/column, not matched rows
 ),
 
 uuid_columns AS (
@@ -155,10 +158,10 @@ params_header AS (
 
 SELECT
     format(
-        E'%s\nSELECT schema_name, table_name, column_name FROM (\n    %s\n    UNION ALL\n%s\n) ferret\nWHERE schema_name <> %L;',
+        E'%s\nSELECT schema_name, table_name, column_name FROM (\n    %s\n    UNION\n%s\n) ferret\nWHERE schema_name <> %L;',
         (SELECT header_sql FROM params_header),
         $q$SELECT ''::text AS schema_name, ''::text AS table_name, ''::text AS column_name$q$,
-        string_agg(branch_sql, E'\nUNION ALL\n' ORDER BY schema_name, table_name, column_name),
+        string_agg(branch_sql, E'\nUNION\n' ORDER BY schema_name, table_name, column_name),
         ''
     ) AS full_search_sql,
     count(*) AS tables_matched
